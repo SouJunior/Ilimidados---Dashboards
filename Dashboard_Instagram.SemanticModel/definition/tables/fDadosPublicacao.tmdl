@@ -1,0 +1,202 @@
+table fDadosPublicacao
+	lineageTag: 7f0dcaf1-9a14-45d4-81ff-078375901b95
+
+	measure 'Total de Novas Curtidas' = SUM(fDadosPublicacao[Curtidas])
+		formatString: 0
+		lineageTag: b5e7466b-31c2-44c1-8f77-57b211dabc49
+
+	column 'Identificação da publicação'
+		dataType: int64
+		formatString: 0
+		lineageTag: c075472d-56d7-48f8-b48a-04008f69b0d5
+		summarizeBy: sum
+		sourceColumn: Identificação da publicação
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Identificação da conta'
+		dataType: int64
+		formatString: 0
+		lineageTag: f01061cd-fd35-4614-9e61-7bf1d5bb2842
+		summarizeBy: sum
+		sourceColumn: Identificação da conta
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Nome de usuário da conta'
+		dataType: string
+		lineageTag: 3b76e239-4338-497d-a5ce-eb3e2f02bd12
+		summarizeBy: none
+		sourceColumn: Nome de usuário da conta
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Nome da conta'
+		dataType: string
+		lineageTag: 462deeca-1413-4c77-893e-200f9a9c4ae7
+		summarizeBy: none
+		sourceColumn: Nome da conta
+
+		annotation SummarizationSetBy = Automatic
+
+	column Descrição
+		dataType: string
+		lineageTag: d44bda6c-2a42-4dbe-b5cc-00f19d753eb4
+		summarizeBy: none
+		sourceColumn: Descrição
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duração (segundos)'
+		dataType: int64
+		formatString: 0
+		lineageTag: a379dac7-305c-4719-bd3f-136af9567623
+		summarizeBy: sum
+		sourceColumn: Duração (segundos)
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Link permanente'
+		dataType: string
+		lineageTag: e2571d9c-901c-4228-8817-452f7810027a
+		summarizeBy: none
+		sourceColumn: Link permanente
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tipo de publicação'
+		dataType: string
+		lineageTag: 291eba2e-2f5a-4d50-8c1f-586ad11ce097
+		summarizeBy: none
+		sourceColumn: Tipo de publicação
+
+		annotation SummarizationSetBy = Automatic
+
+	column Dados
+		dataType: string
+		lineageTag: ad2cf1c1-68fe-4d07-86cf-60ebf0d1229f
+		summarizeBy: none
+		sourceColumn: Dados
+
+		annotation SummarizationSetBy = Automatic
+
+	column Impressões
+		dataType: int64
+		formatString: 0
+		lineageTag: bcc90020-8398-4022-accd-9ad2ede5e162
+		summarizeBy: sum
+		sourceColumn: Impressões
+
+		annotation SummarizationSetBy = Automatic
+
+	column Compartilhamentos
+		dataType: int64
+		formatString: 0
+		lineageTag: 8f93bf7e-b04b-4b8c-9ecd-0a8d46c052d5
+		summarizeBy: sum
+		sourceColumn: Compartilhamentos
+
+		annotation SummarizationSetBy = Automatic
+
+	column Curtidas
+		dataType: int64
+		formatString: #,0
+		lineageTag: 7a689b13-46bb-42e4-a859-5acf5b7ee6c0
+		summarizeBy: sum
+		sourceColumn: Curtidas
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comentários
+		dataType: int64
+		formatString: 0
+		lineageTag: 57f38733-bb2b-43c5-8ff3-3c0985074b47
+		summarizeBy: sum
+		sourceColumn: Comentários
+
+		annotation SummarizationSetBy = Automatic
+
+	column Salvamentos
+		dataType: int64
+		formatString: 0
+		lineageTag: c13590f5-4bd5-4a1b-b1a1-f839285f24f2
+		summarizeBy: sum
+		sourceColumn: Salvamentos
+
+		annotation SummarizationSetBy = Automatic
+
+	column Reproduções
+		dataType: double
+		formatString: 0
+		lineageTag: cfcab2bf-0434-43ef-b727-b98a19b800b5
+		summarizeBy: sum
+		sourceColumn: Reproduções
+
+		annotation SummarizationSetBy = Automatic
+
+	column Seguimentos
+		dataType: double
+		formatString: 0
+		lineageTag: ad40dc0f-2aaa-4111-8a66-2733cbf50ba4
+		summarizeBy: sum
+		sourceColumn: Seguimentos
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Data da Publicação'
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: bc5a3051-8625-4c15-88f5-5cc6aa83e3a7
+		summarizeBy: none
+		sourceColumn: Data da Publicação
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column 'Horário de publicação'
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: baf167b6-dc1d-4dca-923d-2428afb2898a
+		summarizeBy: none
+		sourceColumn: Horário de publicação
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column Alcance
+		dataType: int64
+		formatString: 0
+		lineageTag: ba1136fa-2242-4344-824d-29b1aa80ff22
+		summarizeBy: sum
+		sourceColumn: Alcance
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fDadosPublicacao = m
+		mode: import
+		source =
+				let
+				    Fonte = Csv.Document(File.Contents("C:\Users\Fundação de arte\Documents\Desktop\Bruna\Projetos\SouJunior Instagram\PowerBI\tabela_dados_de_publicacao.csv"),[Delimiter=",", Columns=19, Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Identificação da publicação", Int64.Type}, {"Identificação da conta", Int64.Type}, {"Nome de usuário da conta", type text}, {"Nome da conta", type text}, {"Descrição", type text}, {"Duração (segundos)", Int64.Type}, {"Horário de publicação", type text}, {"Link permanente", type text}, {"Tipo de publicação", type text}, {"Comentário de dados", type text}, {"Data", type text}, {"Impressões", Int64.Type}, {"Alcance", Int64.Type}, {"Compartilhamentos", Int64.Type}, {"Curtidas", Int64.Type}, {"Comentários", Int64.Type}, {"Salvamentos", Int64.Type}, {"Reproduções", Int64.Type}, {"Seguimentos", Int64.Type}}),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Tipo Alterado",{"Comentário de dados"}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Colunas Removidas",{{"Data", "Dados"}}),
+				    #"Dividir Coluna por Delimitador" = Table.SplitColumn(#"Colunas Renomeadas", "Horário de publicação", Splitter.SplitTextByDelimiter(" ", QuoteStyle.None), {"Horário de publicação.1", "Horário de publicação.2"}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Dividir Coluna por Delimitador",{{"Horário de publicação.1", type text}, {"Horário de publicação.2", type time}}),
+				    #"Colunas Renomeadas1" = Table.RenameColumns(#"Tipo Alterado1",{{"Horário de publicação.1", "Data da Publicação"}, {"Horário de publicação.2", "Horário de publicação"}}),
+				    #"Data da Publicação Convertida" = Table.TransformColumns(#"Colunas Renomeadas1", {{"Data da Publicação", each Date.FromText(_, "en-US"), type date}}),
+				    #"Valor Substituído" = Table.ReplaceValue(#"Data da Publicação Convertida",null,0,Replacer.ReplaceValue,{"Reproduções"}),
+				    #"Valor Substituído1" = Table.ReplaceValue(#"Valor Substituído",null,0,Replacer.ReplaceValue,{"Seguimentos"}),
+				    #"Linhas Classificadas" = Table.Sort(#"Valor Substituído1",{{"Data da Publicação", Order.Ascending}}),
+				    #"Valor Substituído2" = Table.ReplaceValue(#"Linhas Classificadas","Reel do Instagram","Reels",Replacer.ReplaceText,{"Tipo de publicação"}),
+				    #"Valor Substituído3" = Table.ReplaceValue(#"Valor Substituído2","Carrossel do Instagram","Carrossel",Replacer.ReplaceText,{"Tipo de publicação"}),
+				    #"Valor Substituído4" = Table.ReplaceValue(#"Valor Substituído3","Imagem do Instagram","Imagem",Replacer.ReplaceText,{"Tipo de publicação"})
+				in
+				    #"Valor Substituído4"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

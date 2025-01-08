@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Dashboard_Instagram"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "55475a5c-4914-4645-b1e7-14e6fbd65d60"
+  }
+}

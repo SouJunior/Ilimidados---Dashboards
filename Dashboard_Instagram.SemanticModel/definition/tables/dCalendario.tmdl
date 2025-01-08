@@ -1,0 +1,88 @@
+table dCalendario
+	lineageTag: 475ec2fe-6b51-4b57-bec9-3fa8b6b380c2
+
+	column Data
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 4c1d5f61-59c9-4cf9-a2e4-1b7a383c8c3d
+		summarizeBy: none
+		sourceColumn: Data
+
+		variation Variation
+			isDefault
+			relationship: e9d0c1b8-5952-4c61-aef1-a6fd7e16e2a5
+			defaultHierarchy: LocalDateTable_aa8841ec-a5ca-4698-a27e-101fb56b660f.'Hierarquia de datas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column ano
+		dataType: int64
+		formatString: 0
+		lineageTag: 71a07cb3-440e-44c5-9444-1f7019ae2042
+		summarizeBy: sum
+		sourceColumn: ano
+
+		annotation SummarizationSetBy = Automatic
+
+	column mes
+		dataType: int64
+		formatString: 0
+		lineageTag: 071acf9d-6c4b-44db-9bf4-b710086f95ae
+		summarizeBy: sum
+		sourceColumn: mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column nome_mes
+		dataType: string
+		lineageTag: e7738b93-98fd-41b6-9698-6f1649551ebf
+		summarizeBy: none
+		sourceColumn: nome_mes
+
+		annotation SummarizationSetBy = Automatic
+
+	column mes_ano
+		dataType: string
+		lineageTag: 077f2a96-0983-4a0f-a3b8-05ba749e814a
+		summarizeBy: none
+		sourceColumn: mes_ano
+
+		annotation SummarizationSetBy = Automatic
+
+	column indice_mes_ano
+		dataType: int64
+		formatString: 0
+		lineageTag: 09f2ba79-2418-4191-9771-16593ae305c0
+		summarizeBy: sum
+		sourceColumn: indice_mes_ano
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dCalendario = m
+		mode: import
+		source =
+				let
+				    DataMin = List.Min(fAlcance[Data]),
+				    DataMax = List.Max(fAlcance[Data]),
+				    QtdeDias = Duration.Days(DataMax - DataMin) + 1,
+				    AnoMin = Date.Year(DataMin),
+				    ListaDatas = List.Dates(DataMin, QtdeDias, #duration(1,0,0,0)),
+				    Tabela = Table.FromList(ListaDatas, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    Tipo_Data = Table.TransformColumnTypes(Tabela, {{"Column1", type date}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(Tipo_Data, {{"Column1", "Data"}}),
+				    Ano = Table.AddColumn(#"Colunas Renomeadas", "ano", each Date.Year([Data]), Int64.Type),
+				    Mes = Table.AddColumn(Ano, "mes", each Date.Month([Data]), Int64.Type),
+				    Descricao_Mes = Table.AddColumn(Mes, "nome_mes", each Text.Proper(Text.Start(Date.MonthName([Data]), 3)), type text),
+				    Descricao_Mes_Ano = Table.AddColumn(Descricao_Mes, "mes_ano", each [nome_mes] & "/" & Text.From([ano])),
+				    Tipo_Mes_Ano = Table.TransformColumnTypes(Descricao_Mes_Ano, {{"mes_ano", type text}}),
+				    Indice_Mes_Ano = Table.AddColumn(Tipo_Mes_Ano, "indice_mes_ano", each ([ano] - AnoMin) * 12 + [mes]),
+				    Tipo_Indice_Mes_Ano = Table.TransformColumnTypes(Indice_Mes_Ano, {{"indice_mes_ano", Int64.Type}})
+				in
+				    Tipo_Indice_Mes_Ano
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

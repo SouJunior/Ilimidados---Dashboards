@@ -1,0 +1,58 @@
+table fFaixaEtaria
+	lineageTag: ede51e3a-d5ce-4f52-a725-67f68115502e
+
+	column 'Faixa etária e Gênero'
+		dataType: string
+		lineageTag: 14ce2857-84b2-4d47-bbe1-17c764365de6
+		summarizeBy: none
+		sourceColumn: Faixa etária e Gênero
+
+		annotation SummarizationSetBy = Automatic
+
+	column Mulheres
+		dataType: double
+		lineageTag: 32c63fe1-1a04-49ed-9d8e-ff9e47ef9bdb
+		summarizeBy: sum
+		sourceColumn: Mulheres
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Homens
+		dataType: double
+		lineageTag: 511d0278-936d-4c91-9144-f470582f74df
+		summarizeBy: sum
+		sourceColumn: Homens
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Data
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 59c3eaff-090a-4fe2-85f8-314688d4b036
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	partition fFaixaEtaria = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\Fundação de arte\Documents\Desktop\Bruna\Projetos\SouJunior Instagram\PowerBI\tabela_faixa_etaria.xlsx"), null, true),
+				    Planilha1_Sheet = Fonte{[Item="Planilha1",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Planilha1_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Faixa etária e Gênero", type text}, {"Mulheres", type number}, {"Homens", type number}, {"Data", type date}}),
+				    #"Linhas Inferiores Removidas" = Table.RemoveLastN(#"Tipo Alterado",5)
+				in
+				    #"Linhas Inferiores Removidas"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
