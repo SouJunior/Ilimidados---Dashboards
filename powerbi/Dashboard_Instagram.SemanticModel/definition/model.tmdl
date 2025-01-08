@@ -1,0 +1,30 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["fAlcance","fDadosPublicacao","fSeguidores","fVisitas","fPrincipaisCidades","fPrincipaisPaises","fPrincipaisPaginas","dCalendario","fFaixaEtaria"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.138.1452.0 (24.11)
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table fAlcance
+ref table fDadosPublicacao
+ref table fSeguidores
+ref table DateTableTemplate_e73164e2-2dad-4449-9faa-6e0ff8ab3d97
+ref table fVisitas
+ref table fPrincipaisCidades
+ref table fPrincipaisPaises
+ref table fPrincipaisPaginas
+ref table dCalendario
+ref table LocalDateTable_aa8841ec-a5ca-4698-a27e-101fb56b660f
+ref table fFaixaEtaria
+
+ref cultureInfo pt-BR
+

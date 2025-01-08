@@ -1,0 +1,41 @@
+table fAlcance
+	lineageTag: b3bc119a-d9d1-47aa-8e26-06dd344ba52e
+
+	column Data
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: e0f22c83-d60f-4d28-870d-a3d09fc080d8
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Alcance
+		dataType: int64
+		formatString: #,0
+		lineageTag: c4a354b9-9e13-4a74-8eb9-69490070bc34
+		summarizeBy: sum
+		sourceColumn: Alcance
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fAlcance = m
+		mode: import
+		source =
+				let
+				    Fonte = Csv.Document(File.Contents("C:\Users\Fundação de arte\Documents\Desktop\Bruna\Projetos\SouJunior Instagram\PowerBI\tabela_alcance.csv"),[Delimiter=",", Columns=2, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Fonte, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Data", type datetime}, {"Primary", Int64.Type}}),
+				    #"Primeiros caracteres extraídos" = Table.TransformColumns(#"Tipo Alterado", {{"Data", each Text.Start(Text.From(_, "pt-BR"), 10), type text}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Primeiros caracteres extraídos",{{"Primary", "Alcance"}}),
+				    #"Duplicatas Removidas" = Table.Distinct(#"Colunas Renomeadas", {"Data"}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Duplicatas Removidas",{{"Data", type date}})
+				in
+				    #"Tipo Alterado1"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

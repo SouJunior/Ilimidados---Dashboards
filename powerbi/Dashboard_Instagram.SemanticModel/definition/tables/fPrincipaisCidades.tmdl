@@ -1,0 +1,120 @@
+table fPrincipaisCidades
+	lineageTag: 88117bfe-3d8e-4d7b-8302-e253c7004aa7
+
+	column 'São Paulo'
+		dataType: double
+		lineageTag: 0815fc25-987c-43c1-b141-de403ed61418
+		summarizeBy: sum
+		sourceColumn: São Paulo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Rio de Janeiro'
+		dataType: double
+		lineageTag: d700b025-ebd5-441f-a2d3-4c9f26952e09
+		summarizeBy: sum
+		sourceColumn: Rio de Janeiro
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Belo Horizonte'
+		dataType: double
+		lineageTag: 46932925-f20d-454c-8e77-d03537c6363c
+		summarizeBy: sum
+		sourceColumn: Belo Horizonte
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Fortaleza
+		dataType: double
+		lineageTag: 42b7eda2-4c8e-4419-900c-559fd4efe8a7
+		summarizeBy: sum
+		sourceColumn: Fortaleza
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Manaus
+		dataType: double
+		lineageTag: 7ae848fe-1b0d-43ae-8dbf-f670f4d40ef2
+		summarizeBy: sum
+		sourceColumn: Manaus
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Salvador
+		dataType: double
+		lineageTag: e1551e69-6776-4ea5-bd75-bf62eee0b44d
+		summarizeBy: sum
+		sourceColumn: Salvador
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Curitiba
+		dataType: double
+		lineageTag: dbbdf05b-1051-4149-86e2-c23bc59b59f0
+		summarizeBy: sum
+		sourceColumn: Curitiba
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Recife
+		dataType: double
+		lineageTag: 137540e6-c5c8-4b91-891d-1afb5a999774
+		summarizeBy: sum
+		sourceColumn: Recife
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Goiânia
+		dataType: double
+		lineageTag: bf455906-7661-4c7f-9821-8e02855cd1a4
+		summarizeBy: sum
+		sourceColumn: Goiânia
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Belém
+		dataType: double
+		lineageTag: 523f0bff-b533-446f-b54e-5081d15165fc
+		summarizeBy: sum
+		sourceColumn: Belém
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fPrincipaisCidades = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\Fundação de arte\Documents\Desktop\Bruna\Projetos\SouJunior Instagram\PowerBI\tabela_principais_cidades.xlsx"), null, true),
+				    Planilha1_Sheet = Fonte{[Item="Planilha1",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Planilha1_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Principais cidades", type any}, {"Column2", type any}, {"Column3", type any}, {"Column4", type any}, {"Column5", type any}, {"Column6", type any}, {"Column7", type any}, {"Column8", type any}, {"Column9", type any}, {"Column10", type any}}),
+				    #"Cabeçalhos Promovidos1" = Table.PromoteHeaders(#"Tipo Alterado", [PromoteAllScalars=true]),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos1",{{"São Paulo", type number}, {"Rio de Janeiro", type number}, {"Belo Horizonte", type number}, {"Fortaleza", type number}, {"Manaus", type number}, {"Salvador", type number}, {"Curitiba", type number}, {"Recife", type number}, {"Goiânia", type number}, {"Belém", type number}})
+				in
+				    #"Tipo Alterado1"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

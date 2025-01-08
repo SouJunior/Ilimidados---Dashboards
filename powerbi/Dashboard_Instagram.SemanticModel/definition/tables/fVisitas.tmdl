@@ -1,0 +1,47 @@
+table fVisitas
+	lineageTag: 9e3f309a-019f-4e2a-b0b4-5c5294614a82
+
+	column Data
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 383385ae-a581-4d71-a0e0-1527468c4740
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Visitas
+		dataType: int64
+		formatString: 0
+		lineageTag: d287888d-15d6-4857-a82f-19fb1ba72ba5
+		summarizeBy: sum
+		sourceColumn: Visitas
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fVisitas = m
+		mode: import
+		source =
+				let
+				    Fonte = Csv.Document(File.Contents("C:\Users\Fundação de arte\Documents\Desktop\Bruna\Projetos\SouJunior Instagram\PowerBI\tabela_visitas.csv"),[Delimiter=";", Columns=1, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Column1", type text}}),
+				    #"Dividir Coluna por Delimitador" = Table.SplitColumn(#"Tipo Alterado", "Column1", Splitter.SplitTextByDelimiter(",", QuoteStyle.Csv), {"Column1.1", "Column1.2"}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Dividir Coluna por Delimitador",{{"Column1.1", type text}, {"Column1.2", type text}}),
+				    #"Linhas Superiores Removidas" = Table.Skip(#"Tipo Alterado1",2),
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(#"Linhas Superiores Removidas", [PromoteAllScalars=true]),
+				    #"Tipo Alterado2" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Data", type text}, {"Primary", type text}}),
+				    #"Primeiros caracteres extraídos" = Table.TransformColumns(#"Tipo Alterado2", {{"Data", each Text.Start(_, 10), type text}}),
+				    #"Tipo Alterado3" = Table.TransformColumnTypes(#"Primeiros caracteres extraídos",{{"Data", type date}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Tipo Alterado3",{{"Primary", "Visitas"}}),
+				    #"Erros Removidos" = Table.RemoveRowsWithErrors(#"Colunas Renomeadas", {"Data"}),
+				    #"Duplicatas Removidas" = Table.Distinct(#"Erros Removidos", {"Data"}),
+				    #"Tipo Alterado4" = Table.TransformColumnTypes(#"Duplicatas Removidas",{{"Visitas", Int64.Type}})
+				in
+				    #"Tipo Alterado4"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

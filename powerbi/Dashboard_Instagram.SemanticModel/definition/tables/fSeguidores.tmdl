@@ -1,0 +1,183 @@
+table fSeguidores
+	lineageTag: db95d87d-8bd8-4258-afe9-00a074b3af00
+
+	measure 'Seguidores Atuais' = ```
+			
+			CALCULATE(
+			    SUM(fSeguidores[Seguidores]),
+			    FILTER(
+			        fSeguidores,
+			        fSeguidores[Data] <= MAX(fSeguidores[Data])
+			    )
+			)
+			
+			
+			```
+		formatString: 0
+		lineageTag: 0b8051da-6575-4ca1-8231-6f904d907997
+
+	measure 'Variação Diária' = ```
+			
+			VAR SeguidoresHoje = CALCULATE(MAX(fSeguidores[Seguidores]), fSeguidores[Data] = MAX(fSeguidores[Data]))
+			VAR SeguidoresOntem = CALCULATE(MAX(fSeguidores[Seguidores]), fSeguidores[Data] = MAX(fSeguidores[Data]) - 1)
+			RETURN SeguidoresHoje - SeguidoresOntem
+			
+			```
+		formatString: 0
+		lineageTag: 8bfa1652-dc21-4bd1-abfb-e1555a10e497
+
+	measure 'Cor Seta Para Cima' = ```
+			
+			IF([Variação Diária] > 0, "#006400", "#ffffff00")
+			
+			```
+		lineageTag: daf24137-20d4-45df-8b8c-e8891b618e6e
+
+	measure 'Cor Seta Para Baixo' = ```
+			
+			IF([Variação Diária] <= 0, "#FF0000", "#ffffff00")
+			
+			
+			
+			```
+		lineageTag: 4bd8476a-d220-45bf-a8fa-f9a60330f7f8
+
+	measure 'Seguidores Últimos 30 dias' =
+			
+			CALCULATE(
+			    SUM(fSeguidores[Seguidores]),
+			    DATESINPERIOD(fSeguidores[Data], MAX(fSeguidores[Data]), - 30, DAY)
+			)
+		formatString: 0
+		lineageTag: 546fbefa-486c-49bf-b2a3-403c9a67e8ae
+
+	measure 'Data e Seguidores Atualizados' = ```
+			
+			"Atualização em " & FORMAT(CALCULATE(MAX(fSeguidores[Data])), "dd/MM/yyyy") & 
+			": " & CALCULATE(SUM(fSeguidores[Seguidores]), fSeguidores[Data] = MAX(fSeguidores[Data])) & " seguidores"
+			
+			```
+		lineageTag: 53a989c6-d5bb-4a87-b58e-9c0106c1b160
+
+	measure 'Total de novos seguidores' = SUM(fSeguidores[Seguidores])
+		formatString: 0
+		lineageTag: 330323da-f54c-4914-8741-a8aec099d105
+
+	measure 'Seguidores maior data' = CALCULATE(fSeguidores[Seguidores Atuais], fSeguidores[Data] = MAX(fSeguidores[Data]))
+		formatString: 0
+		lineageTag: 280be697-415e-45ee-9a47-3852a180bc33
+
+	measure 'Seguidores data anterior' = CALCULATE(fSeguidores[Seguidores Atuais], fSeguidores[Data] = MAX(fSeguidores[Data]) - 1)
+		formatString: 0
+		lineageTag: ed41ed9c-4f68-4fb8-b301-09cb79a5460e
+
+	measure 'Seta Aumento' = ```
+			
+			VAR ValorAtual = fSeguidores[Seguidores maior data]
+			VAR ValorAnterior = fSeguidores[Seguidores data anterior]
+			RETURN
+			    IF(ValorAtual > ValorAnterior, "▲", BLANK())
+			
+			
+			```
+		displayFolder: medidas
+		lineageTag: ad25c475-fb83-4ae2-9a8e-74fbe0d78694
+
+	measure 'Seta Diminuição' = ```
+			
+			VAR ValorAtual = fSeguidores[Seguidores maior data]
+			VAR ValorAnterior = fSeguidores[Seguidores data anterior]
+			RETURN
+			    IF(ValorAtual < ValorAnterior, "▼", BLANK())
+			
+			```
+		lineageTag: 4a9c8ff9-3ef8-4da8-aab1-cca9a8cc3a7a
+
+	measure 'Seta Neutra' = ```
+			
+			VAR ValorAtual = fSeguidores[Seguidores maior data]
+			VAR ValorAnterior = fSeguidores[Seguidores data anterior]
+			RETURN
+			    IF(ValorAtual = ValorAnterior, "⭘", BLANK())
+			
+			```
+		lineageTag: 2bc4bcd7-cc73-4dea-aa4c-cb9d6557532a
+
+	measure 'Comparação Seguidores' = ```
+			
+			VAR ValorAtual = [Seguidores maior data]
+			VAR ValorAnterior = [Seguidores data anterior]
+			RETURN
+			    ValorAtual - ValorAnterior
+			
+			```
+		formatString: 0
+		displayFolder: medidas
+		lineageTag: c4f1af52-be23-4abf-9f70-bd115a728304
+
+	measure Transparente = "#ffffff00"
+		lineageTag: 1847efcc-c67d-42bd-a562-9064591bcf31
+
+	measure 'Data e Seguidores Atualizados do Dia Anterior' = ```
+			
+			"Atualização em " & 
+			FORMAT(
+			    CALCULATE(
+			        MAX(fSeguidores[Data]) - 1
+			    ), "dd/MM/yyyy") & 
+			": " & 
+			CALCULATE(SUM(fSeguidores[Seguidores]), fSeguidores[Data] = MAX(fSeguidores[Data]) - 1)
+			& " seguidores"
+			```
+		lineageTag: a41d9b41-069e-48a8-882c-e2d0a6b15b5b
+
+	column Data
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 08f06b00-85a5-4453-97d9-5039ff434734
+		summarizeBy: none
+		sourceColumn: Data
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Seguidores
+		dataType: int64
+		formatString: 0
+		lineageTag: 5320ef78-61c3-4c49-9c4d-2388831b3c31
+		summarizeBy: sum
+		sourceColumn: Seguidores
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fSeguidores = m
+		mode: import
+		source =
+				let
+				    Fonte = Csv.Document(File.Contents("C:\Users\Fundação de arte\Documents\Desktop\Bruna\Projetos\SouJunior Instagram\PowerBI\tabela_seguidores.csv"),[Delimiter=";", Columns=1, Encoding=1252, QuoteStyle=QuoteStyle.None]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(Fonte,{{"Column1", type text}}),
+				    #"Dividir Coluna por Delimitador" = Table.SplitColumn(#"Tipo Alterado", "Column1", Splitter.SplitTextByDelimiter(",", QuoteStyle.Csv), {"Column1.1", "Column1.2"}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Dividir Coluna por Delimitador",{{"Column1.1", type text}, {"Column1.2", type text}}),
+				    #"Linhas Superiores Removidas" = Table.Skip(#"Tipo Alterado1",2),
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(#"Linhas Superiores Removidas", [PromoteAllScalars=true]),
+				    #"Tipo Alterado2" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Data", type text}, {"Primary", type text}}),
+				    #"Primeiros caracteres extraídos" = Table.TransformColumns(#"Tipo Alterado2", {{"Data", each Text.Start(_, 10), type text}}),
+				    #"Colunas Renomeadas" = Table.RenameColumns(#"Primeiros caracteres extraídos",{{"Primary", "Alcance"}}),
+				    #"Linhas alternadas removidas" = Table.AlternateRows(#"Colunas Renomeadas",20,1,64),
+				    #"Linhas alternadas removidas1" = Table.AlternateRows(#"Linhas alternadas removidas",20,1,63),
+				    #"Linhas alternadas removidas2" = Table.AlternateRows(#"Linhas alternadas removidas1",35,1,62),
+				    #"Linhas alternadas removidas3" = Table.AlternateRows(#"Linhas alternadas removidas2",35,1,61),
+				    #"Linhas alternadas removidas4" = Table.AlternateRows(#"Linhas alternadas removidas3",43,1,60),
+				    #"Linhas alternadas removidas5" = Table.AlternateRows(#"Linhas alternadas removidas4",43,1,59),
+				    #"Tipo Alterado3" = Table.TransformColumnTypes(#"Linhas alternadas removidas5",{{"Data", type date}}),
+				    #"Colunas Renomeadas1" = Table.RenameColumns(#"Tipo Alterado3",{{"Alcance", "Seguidores"}}),
+				    #"Duplicatas Removidas" = Table.Distinct(#"Colunas Renomeadas1", {"Data"}),
+				    #"Tipo Alterado4" = Table.TransformColumnTypes(#"Duplicatas Removidas",{{"Seguidores", Int64.Type}})
+				in
+				    #"Tipo Alterado4"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

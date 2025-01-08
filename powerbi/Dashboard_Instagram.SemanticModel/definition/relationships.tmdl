@@ -1,0 +1,25 @@
+relationship e9d0c1b8-5952-4c61-aef1-a6fd7e16e2a5
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dCalendario.Data
+	toColumn: LocalDateTable_aa8841ec-a5ca-4698-a27e-101fb56b660f.Date
+
+relationship 6ab66974-dd24-ed04-dbc2-0bd15a8f383b
+	fromColumn: fAlcance.Data
+	toColumn: dCalendario.Data
+
+relationship 59097457-a339-25dc-04c1-d9334502da32
+	fromColumn: fDadosPublicacao.'Data da Publicação'
+	toColumn: dCalendario.Data
+
+relationship 10c25be1-72b8-a66e-1f3c-33aec2fa0567
+	fromColumn: fSeguidores.Data
+	toColumn: dCalendario.Data
+
+relationship 67ce2d46-17b6-8e4c-7069-ca06a1f9fb5f
+	fromColumn: fVisitas.Data
+	toColumn: dCalendario.Data
+
+relationship 39c6a6e0-4759-dd1f-c0fd-fd89986d1fb4
+	fromColumn: fFaixaEtaria.Data
+	toColumn: dCalendario.Data
+
