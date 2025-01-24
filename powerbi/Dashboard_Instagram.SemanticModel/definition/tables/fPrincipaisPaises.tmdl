@@ -1,0 +1,83 @@
+table fPrincipaisPaises
+	lineageTag: 9db5e0e6-956a-47ed-b022-c5cc6156d290
+
+	column Brazil
+		dataType: double
+		lineageTag: 518933fa-fd84-492e-81b5-f061018dd494
+		summarizeBy: sum
+		sourceColumn: Brazil
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Portugal
+		dataType: double
+		lineageTag: 7309e99a-5b97-44e0-8f96-97a21feb3a72
+		summarizeBy: sum
+		sourceColumn: Portugal
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Estados Unidos'
+		dataType: double
+		lineageTag: d0285cbb-b529-41a2-8d54-f90326fb0fb1
+		summarizeBy: sum
+		sourceColumn: Estados Unidos
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Reino Unido'
+		dataType: double
+		lineageTag: 8a71075c-a676-486b-8a6f-1ea773ad9461
+		summarizeBy: sum
+		sourceColumn: Reino Unido
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Canadá
+		dataType: double
+		lineageTag: f58375aa-3b2f-477d-a4d3-670d4ea96c1b
+		summarizeBy: sum
+		sourceColumn: Canadá
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fPrincipaisPaises = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\Fundação de arte\Documents\Desktop\Bruna\Projetos\SouJunior Instagram\PowerBI\tabela_principais_paises.xlsx"), null, true),
+				    Planilha1_Sheet = Fonte{[Item="Planilha1",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Planilha1_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Principais países", type any}, {"Column2", type any}, {"Column3", type any}, {"Column4", type any}, {"Column5", type any}}),
+				    #"Cabeçalhos Promovidos1" = Table.PromoteHeaders(#"Tipo Alterado", [PromoteAllScalars=true]),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos1",{{"Brazil", type number}, {"Portugal", type number}, {"Estados Unidos", type number}, {"Reino Unido", type number}, {"Canadá", type number}}),
+				    #"Linhas Inferiores Removidas" = Table.RemoveLastN(#"Tipo Alterado1",6)
+				in
+				    #"Linhas Inferiores Removidas"
+
+	changedProperty = IsHidden
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

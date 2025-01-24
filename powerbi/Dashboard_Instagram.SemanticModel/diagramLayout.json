@@ -1,0 +1,139 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 240,
+        "y": 0
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 348,
+            "y": 263.125
+          },
+          "nodeIndex": "dCalendario",
+          "nodeLineageTag": "475ec2fe-6b51-4b57-bec9-3fa8b6b380c2",
+          "size": {
+            "height": 145,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 158
+          },
+          "nodeIndex": "fAlcance",
+          "nodeLineageTag": "b3bc119a-d9d1-47aa-8e26-06dd344ba52e",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 669,
+            "y": 147
+          },
+          "nodeIndex": "fDadosPublicacao",
+          "nodeLineageTag": "7f0dcaf1-9a14-45d4-81ff-078375901b95",
+          "size": {
+            "height": 145,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 674,
+            "y": 387
+          },
+          "nodeIndex": "fSeguidores",
+          "nodeLineageTag": "db95d87d-8bd8-4258-afe9-00a074b3af00",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 349,
+            "y": 0
+          },
+          "nodeIndex": "fVisitas",
+          "nodeLineageTag": "9e3f309a-019f-4e2a-b0b4-5c5294614a82",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 672.99995422363281,
+            "y": 766.5
+          },
+          "nodeIndex": "fPrincipaisCidades",
+          "nodeLineageTag": "88117bfe-3d8e-4d7b-8302-e253c7004aa7",
+          "size": {
+            "height": 150,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 365,
+            "y": 759.25
+          },
+          "nodeIndex": "fPrincipaisPaises",
+          "nodeLineageTag": "9db5e0e6-956a-47ed-b022-c5cc6156d290",
+          "size": {
+            "height": 162,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 52.333328247070313,
+            "y": 774.25
+          },
+          "nodeIndex": "fPrincipaisPaginas",
+          "nodeLineageTag": "3e611503-3bcb-4b46-a065-4de41c9a476f",
+          "size": {
+            "height": 145,
+            "width": 234
+          },
+          "zIndex": 8
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 376.625
+          },
+          "nodeIndex": "fFaixaEtaria",
+          "nodeLineageTag": "ede51e3a-d5ce-4f52-a725-67f68115502e",
+          "size": {
+            "height": 145,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas as tabelas",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas as tabelas",
+  "defaultDiagram": "Todas as tabelas"
+}

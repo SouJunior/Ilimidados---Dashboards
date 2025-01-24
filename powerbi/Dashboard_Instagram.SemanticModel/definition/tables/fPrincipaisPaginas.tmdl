@@ -1,0 +1,122 @@
+table fPrincipaisPaginas
+	lineageTag: 3e611503-3bcb-4b46-a065-4de41c9a476f
+
+	column Cifras
+		dataType: double
+		lineageTag: 9f76ca8e-513a-4a97-a203-1e66676151d3
+		summarizeBy: sum
+		sourceColumn: Cifras
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Luciano Huck'
+		dataType: double
+		lineageTag: eaade5b8-47cf-41d6-91d2-e820365a17cb
+		summarizeBy: sum
+		sourceColumn: Luciano Huck
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Magazine Luiza'
+		dataType: double
+		lineageTag: b34d78c2-8604-42cb-a5ad-6e8d6b1cc8b2
+		summarizeBy: sum
+		sourceColumn: Magazine Luiza
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'O Boticário'
+		dataType: double
+		lineageTag: 33c25b34-53f8-4ec9-bb08-04721d7e05ad
+		summarizeBy: sum
+		sourceColumn: O Boticário
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Mercado Livre'
+		dataType: double
+		lineageTag: 44c8190b-f8a4-44a5-87ec-a9fe9bc2e6ad
+		summarizeBy: sum
+		sourceColumn: Mercado Livre
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Fábio Teruel'
+		dataType: double
+		lineageTag: 4ce6bbf8-8cd9-4775-b5d1-79e3ea7df922
+		summarizeBy: sum
+		sourceColumn: Fábio Teruel
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Facebook
+		dataType: double
+		lineageTag: 21f44973-9ad3-499c-9c2f-6cb02f90739b
+		summarizeBy: sum
+		sourceColumn: Facebook
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Tastemade Brasil'
+		dataType: double
+		lineageTag: e037137a-841a-4464-803e-ee1b2c0ff642
+		summarizeBy: sum
+		sourceColumn: Tastemade Brasil
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Coca-Cola
+		dataType: double
+		lineageTag: c9ec37d7-de74-463a-90b3-4d958a971872
+		summarizeBy: sum
+		sourceColumn: Coca-Cola
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'TNT Sports Brasil'
+		dataType: double
+		lineageTag: 43e350b4-a2fb-4378-859c-a0f7ceb5052c
+		summarizeBy: sum
+		sourceColumn: TNT Sports Brasil
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition fPrincipaisPaginas = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("C:\Users\Fundação de arte\Documents\Desktop\Bruna\Projetos\SouJunior Instagram\PowerBI\tabela_principais_paginas.xlsx"), null, true),
+				    Planilha1_Sheet = Fonte{[Item="Planilha1",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Planilha1_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Principais páginas", type any}, {"Column2", type any}, {"Column3", type any}, {"Column4", type any}, {"Column5", type any}, {"Column6", type any}, {"Column7", type any}, {"Column8", type any}, {"Column9", type any}, {"Column10", type any}, {"Column11", type any}}),
+				    #"Cabeçalhos Promovidos1" = Table.PromoteHeaders(#"Tipo Alterado", [PromoteAllScalars=true]),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos1",{{"Cifras", type number}, {"Luciano Huck", type number}, {"Magazine Luiza", type number}, {"O Boticário", type number}, {"Mercado Livre", type number}, {"Fábio Teruel", type number}, {"Facebook", type number}, {"Tastemade Brasil", type number}, {"Coca-Cola", type number}, {"TNT Sports Brasil", type number}, {"Column11", type any}}),
+				    #"Linhas Inferiores Removidas" = Table.RemoveLastN(#"Tipo Alterado1",12),
+				    #"Colunas Removidas" = Table.RemoveColumns(#"Linhas Inferiores Removidas",{"Column11"})
+				in
+				    #"Colunas Removidas"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+
